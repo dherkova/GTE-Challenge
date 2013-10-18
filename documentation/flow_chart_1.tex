@@ -1,0 +1,27 @@
+%!TEX root = /Users/olav/Desktop/Doktorarbeit/Causality/challenge/documentation/CHA-readme.tex
+
+\begin{tikzpicture}[node distance = 3cm, auto]
+  % Place nodes
+  \node [block] (topos) {Generate topologies};
+  \node [block, right of=topos] (spikes) {Simulate spiking};
+  \node [block, right of=spikes] (fluoro) {Simulate calcium fluorescence};
+  \node [block, right of=fluoro] (rec) {Compute effective connectivity};
+  \node [block, right of=rec] (rocs) {Compute ROC curves};
+  % \node [block, below of=identify] (evaluate) {evaluate candidate models};
+  % \node [block, left of=evaluate, node distance=3cm] (update) {update model};
+  % \node [decision, below of=evaluate] (decide) {is best candidate better?};
+  % \node [block, below of=decide, node distance=3cm] (stop) {stop};
+  % Draw edges
+  \path [line] (topos) -- (spikes);
+  \path [line] (spikes) -- (fluoro);
+  \path [line] (fluoro) -- (rec);
+  \path [line] (rec) -- (rocs);
+  % \path [line] (identify) -- (evaluate);
+  % \path [line] (evaluate) -- (decide);
+  % \path [line] (decide) -| node [near start] {yes} (update);
+  % \path [line] (update) |- (identify);
+  % \path [line] (decide) -- node {no}(stop);
+  % \path [line,dashed] (expert) -- (init);
+  % \path [line,dashed] (system) -- (init);
+  % \path [line,dashed] (system) |- (evaluate);
+\end{tikzpicture}

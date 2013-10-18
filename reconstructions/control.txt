@@ -1,0 +1,42 @@
+// -- SimKernel control file --
+
+size = Iterator[{50, 100, 500}];
+
+// word length
+p = 2;
+SourceMarkovOrder = p;
+TargetMarkovOrder = p;
+StartSampleIndex = p;
+// bins = 3;
+globalbins = 2;
+
+bins = 2;
+binEdges = {-10.0, 0.12, 10.0};
+
+basedir = "/home/olav/Desktop/Doktorarbeit/Causality/challenge/"; // for UNIX-QSub
+// basedir = ""; // for local
+outputpath = basedir+"reconstructions/";
+
+// input data
+iNet = 1;
+iCC = Iterator[c,{c,1,6,1}];
+inputfile = basedir + "fluorescence/fluorescence_iNet1_Size"+ToString[size]+"_CC0"+ToString[iCC]+".txt";
+
+samples = 177501;
+// speedup hack:
+// samples = 60*1000/tauF;
+
+HighPassFilterQ = True;
+InstantFeedbackTermQ = True;
+IncludeGlobalSignalQ = True;
+
+// RelativeGlobalConditioningLevelQ = False;
+condList = Table[i*0.025, {i, 1, 25, 1}];
+iCond = Iterator[i, {i, 0, Length[condList]-1}];
+GlobalConditioningLevel = condList[[iCond]];
+// GlobalConditioningLevel = 0.112/0.56; // some value for the type of histograms encountered here
+
+// output files
+fileindex = ToString[Iteration[]];
+outputfile = outputpath+"adjA_iteration"+ToString[fileindex]+".mx";
+outputparsfile = outputpath+"pars_iteration"+ToString[fileindex]+".mx";

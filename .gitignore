@@ -21,3 +21,5 @@ reconstructions/qsubjob*
 roc_curves/
 
 topologies/
+
+tests/

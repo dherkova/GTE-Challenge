@@ -1,16 +1,16 @@
-function network = YAMLToConnectivityMatrix(fileName, varargin)
-% YAMLTOCONNECTIVITYMATRIX converts a YAML network structure from 
-% (Stetter 2013) to a MATLAB network structure.
+function network = YAMLToNetwork(fileName, varargin)
+% YAMLTONETWORK converts a YAML network structure to a MATLAB
+% network structure.
 %
 % USAGE:
-%    network = YAMLToConnectivityMatrix(fileName, varargin)
+%    network = YAMLToNetwork(fileName, varargin)
 %
 % INPUT arguments:
-%    fileName - YAML file
+%    fileName - YAML file.
 %
 % INPUT optional arguments ('key' followed by its value): 
 %    'weighted' - true/false. True if the connections have weights (default
-%    is false)
+%    is false).
 %
 % OUTPUT arguments:
 %    network - Network structure with the following elements:
@@ -21,14 +21,14 @@ function network = YAMLToConnectivityMatrix(fileName, varargin)
 %      network.Y - Vector of length N with the Y position of the nodes.
 %
 % EXAMPLE:
-%    network = YAMLToConnectivityMatrix(yourFile.yaml);
+%    network = YAMLToNetwork(yourFile.yaml);
 %    spy(newtork.RS);
 %    figure;
 %    scatter(network.X, network.Y);
 %
 %    (Stetter 2013) Stetter, O., Battaglia, D., Soriano, J. & Geisel, T. 
 %    Model-free reconstruction of excitatory neuronal connectivity from 
-%    calcium imaging signals. <b>PLoS Comput Biol</b> 8, e1002653 (2012).
+%    calcium imaging signals. PLoS Comput Biol 8, e1002653 (2012).
 
 %%% Assign defuault values
 params.weighted = false;

@@ -29,9 +29,9 @@ The MATLAB scripts rely heavily on the following structures:
     events.
 
 ## Installation and Usage
-1. Download the zip with the [GTE-Challenge repository] (https://github.com/dherkova/GTE-Challenge/archive/master.zip)
-2. Load the file called `reconstruction.m` located in the MATLAB folder in MATLAB.
-3. Change the folders in the first cell to yours.
+1. Download the zip within the [GTE-Challenge repository] (https://github.com/dherkova/GTE-Challenge/archive/master.zip)
+2. Load the file called `reconstruction.m` located in the MATLAB folder.
+3. Change the folders in the first cell to match yours.
 4. Run it cell by cell to understand what is going on. The PDF
    calculation can be quite slow (currently 3min for 50 nodes in a
 modern PC, and it scales ~O(N^2). To obtain good reconstruction speeds

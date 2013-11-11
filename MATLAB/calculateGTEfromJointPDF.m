@@ -80,7 +80,12 @@ GTE = squeeze(GTE);
 
 % Now normalize based on the conditioning
 for i = 1:size(GTE,3)
-    normFactor = 1/(sum(GTE(1,2,i)));
+    normFactor = P;
+    for k = 3:(ndimsP-1);
+        normFactor = sum(normFactor,k);
+    end
+    normFactor = squeeze(normFactor);
+    normFactor = 1/(normFactor(1,2,i));
     GTE(:,:,i) = GTE(:,:,i)*normFactor;
 end
 if(~params.returnFull)

@@ -7,6 +7,7 @@ function firings = nestToFirings(indicesFile, timesFile, varargin)
 %
 % INPUT arguments:
 %    indicesFile - NEST indices file (single column with indices).
+%
 %    timesFile - NEST times file (single column with times, in ms).
 %
 % INPUT optional arguments ('key' followed by its value): 

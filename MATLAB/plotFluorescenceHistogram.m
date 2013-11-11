@@ -14,11 +14,14 @@ function h = plotFluorescenceHistogram(F, varargin)
 %        take quite a while.
 %        Integer > 0 - Number of bins.
 %        Vector - position of the bin centers.
+%
 %    'axisScale' - ('linear', 'semilogx', 'semilogy', 'loglog'). Type of
 %    scale used for the axis (default semilogy).
+%
 %    'average' - (true/false). True averages the fluorescence signal over all
 %    neurons (default true).
-%    'plotMode' - ('line','bar'). Type of plot (default line);
+%
+%    'plotMode' - ('line','bar'). Type of plot (default line).
 %
 % OUTPUT arguments:
 %    h - axis handle.
@@ -83,4 +86,6 @@ else
     error('axisScale invalid. Valid options are: ''linear'', ''semilogx'', ''semilogy'' and ''loglog''.');
 end
 
-
+%%% Add some text
+xlabel('Fluorescence');
+ylabel('hits');

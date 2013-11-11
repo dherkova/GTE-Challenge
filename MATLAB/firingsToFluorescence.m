@@ -7,20 +7,29 @@ function [F, T] = firingsToFluorescence(firings, network, varargin)
 %
 % INPUT arguments:
 %    firings - Firings structure (see nestToFirings).
+%
 %    network - Network structure (see YAMLToConnectivityMatrix), will only
 %    be used if lightScattering is true.
 %
 % INPUT optional arguments ('key' followed by its value): 
 %    'dt' - Time step (default 20e-3s).
+%
 %    'tau_Ca' - Time constant of the Ca signal decay (default 1s).
+%
 %    'A_Ca' - Increase in Ca after a spike (default 50 uM).
-%    'K_d' - Ca saturation concentration (defualt 300 uM).
+%
+%    'K_d' - Ca saturation concentration (default 300 uM).
+%
 %    'noise_str' - Strength of the white noise in the Fluorescence signal
 %    (default 0.03).
+%
 %    'lightScattering - true/false. Defines if light scattering is added to
-%    the fluorescence signal.
+%    the fluorescence signal (default false).
+%
 %    'amplitudeScatter' - Amplitude of light scattering (in mm).
+%
 %    'sigmaScatter' - Correlation length of light scattering (in mm).
+%
 %    'Trange' - Vector with values [Tmin Tmax]. Discretizes the signal
 %    between Tmin and Tmax (if empty Tmin and Tmax are the minimum and
 %    maximum spike times).
@@ -48,7 +57,7 @@ params.tau_Ca = 1; % s
 params.A_Ca = 50; % uM
 params.K_d = 300; % uM
 params.noise_str = 0.03;
-params.lightScattering = true;
+params.lightScattering = false;
 params.amplitudeScatter = 0.15;
 params.sigmaScatter = 0.15;
 params.Trange = [];

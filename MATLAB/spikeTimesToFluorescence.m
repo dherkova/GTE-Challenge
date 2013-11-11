@@ -10,14 +10,20 @@ function [F, T] = spikeTimesToFluorescence(spikeTimes, varargin)
 %
 % INPUT optional arguments ('key' followed by its value): 
 %    'dt' - Time step (default 20e-3s).
+%
 %    'tau_Ca' - Time constant of the Ca signal decay (default 1s).
+%
 %    'A_Ca' - Increase in Ca after a spike (default 50 uM).
+%
 %    'K_d' - Ca saturation concentration (defualt 300 uM).
+%
 %    'noise_str' - Strength of the white noise in the Fluorescence signal
 %    (default 0.03).
+%
 %    'Trange' - Vector with values [Tmin Tmax]. Discretizes the signal
 %    between Tmin and Tmax (default Tmin and Tmax are the minimum and
 %    maximum spike times).
+%
 %    'set' - Structure to pass ALL the above parameters together instead.
 %
 % OUTPUT arguments:

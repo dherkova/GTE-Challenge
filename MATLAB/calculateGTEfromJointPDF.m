@@ -12,11 +12,6 @@ function GTE = calculateGTEfromJointPDF(P, varargin)
 %    based on the conditioning levels. If false, only returns a single
 %    score, the one in the first level (default false).
 %
-%    'IFT' - true/false. If true includes IFT (Instant Feedback Term)
-%    (default true).
-%    'Nsamples' - Number of samples to use. If empty, it will use the whole
-%    vector (default empty).
-%
 %    'debug' true/false. Prints out some useful information (default true).
 %
 %

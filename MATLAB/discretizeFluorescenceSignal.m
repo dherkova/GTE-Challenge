@@ -32,8 +32,8 @@ function [D, G] = discretizeFluorescenceSignal(F, varargin)
 % OUTPUT arguments:
 %    D - The discretized signal (each row a sample, aech column a neuron).
 %
-%    G - Binary vector defining if the global signal is above the
-%    conditioning level
+%    G - Vector defining the global conditioning level of the signal at
+%    that given time (for now 1 and 2 for below and above the level).
 %
 % EXAMPLE:
 %    D = discretizeFluorescenceSignal(F, 'bins', 3, 'debug', true);
@@ -107,5 +107,12 @@ else
     for j = 1:(length(binEdges)-1)
         hits = F >= binEdges(j) & F < binEdges(j+1);
         D(hits) = j;
+    end
+    if(params.debug)
+        fprintf('Global bin edges set at: (');
+        for j = 1:(length(binEdges)-1)
+            fprintf('%.2f,', binEdges(j));
+        end
+        fprintf('%.2f).\n', binEdges(end));
     end
 end

@@ -1,6 +1,5 @@
 *.tgz
 
-
 documentation/*.log
 documentation/*.aux
 documentation/*.bbl

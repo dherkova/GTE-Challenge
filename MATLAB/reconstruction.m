@@ -1,4 +1,6 @@
-%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% RECONSTRUCTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% This script goes from the NEST data up to the reconstruction and the
 %%% ROC curves.
 
@@ -23,9 +25,9 @@ path(path, [challengeFolder 'external' filesep 'YAMLMatlab']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE INPUT FILES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-networkFile = ['topologies' filesep 'topology_iNet1_Size100_CC03.yaml'];
-indicesFile = ['spikes' filesep 'indices_iNet1_Size100_CC03.dat'];
-timesFile = ['spikes' filesep 'times_iNet1_Size100_CC03.dat'];
+networkFile = ['topologies' filesep 'topology_iNet1_Size50_CC03.yaml'];
+indicesFile = ['spikes' filesep 'indices_iNet1_Size50_CC03.dat'];
+timesFile = ['spikes' filesep 'times_iNet1_Size50_CC03.dat'];
 
 %% Load spiking data and generate the fluorescence signal
 

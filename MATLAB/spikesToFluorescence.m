@@ -5,7 +5,7 @@ params.dt = 20e-3; % s
 params.tau_Ca = 1; % s
 params.A_Ca = 50; %uM
 params.K_d = 300; % uM
-params.noise_str = 0;
+params.noise_str = 0.03;
 params.debug = false;
 params.Trange = [];
 

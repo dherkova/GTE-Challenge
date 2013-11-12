@@ -28,14 +28,26 @@ The MATLAB scripts rely heavily on the following structures:
   * **firings.N** vector containing the nodes associated to the spike
     events.
 
-## Installation and Usage
+## Installation and mini-tutorial
 1. Download the zip within the [GTE-Challenge repository] (https://github.com/dherkova/GTE-Challenge/archive/master.zip)
 2. Load the file called `reconstruction.m` located in the MATLAB folder.
 3. Change the folders in the first cell to match yours.
 4. Run it cell by cell to understand what is going on. The PDF
    calculation can be quite slow (currently 3min for 50 nodes in a
-modern PC, and it scales ~O(N^2). To obtain good reconstruction speeds
-one should use the C code from the [te-causality package] (https://github.com/olavolav/te-causality).
+   modern PC, and it scales ~O(N^2). To obtain good reconstruction speeds
+   one should use the C code from the [te-causality package] (https://github.com/olavolav/te-causality).
+
+## HOWTO for the Challenge
+1. Load the script `challengeGeneration.m`. This script creates the
+   files that will be used by the challenge participants based on the
+   NEST and network files provided by Olav.
+2. Load the script `challengeExample.m`. This script is an example of a
+   Challenge submission, it uses only the files generated in the
+   previous script and produces a matrix with scores as output.
+3. Load the script `challengeValidation.m`. This script compares the
+   scoring matrix with the true topology through the ROC curve. The AUC
+   and the TPR at 10% are the main observables to be checke in the
+   challenge. (AUC = 1 perfect reconstruction, 0.5 completely random).
 
 ## Included Scripts
 Every script is fully documented, look inside the file.
@@ -43,6 +55,20 @@ Every script is fully documented, look inside the file.
 ### reconstruction
 Main script. Loads a NEST file and performs all the necessary steps to
 obtain the reconstruction.
+
+### challengeGeneration
+This script generates the data for the challenge (fluorescence and network structure). Note: The network and spike data have been created a priori.
+
+### challengeExample
+Example of a challenge submission. Loads the provided fluorescence file
+and performs the reconstruction (based on GTE). As output it generates a
+scoring matrix to be validated against the true network.
+
+### challengeValidation
+Example of a challenge validation. Compares the provided scores matrix
+wtih the true topology using the ROC curve.
+
+## Included Functions
 
 ### YAMLToNetwork
 Converts a YAML network structure to a MATLAB one.
@@ -75,9 +101,14 @@ Calculates the ROC by comparing the GTE scores with the real network.
 
 ## History
 
+### November 12, 2013
+Added independent scripts for: challenge generation, the challenge
+itself and validation.
+
 ### November 11, 2013
 
-Added the remaining scripts. Now there is enough to go from NEST input to the reconstruction.
+Added the remaining scripts. Now there is enough to go from NEST
+input to the reconstruction.
 
 ### November 8, 2013
 

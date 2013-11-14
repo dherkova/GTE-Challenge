@@ -24,8 +24,10 @@ path(path, [challengeFolder 'external' filesep 'YAMLMatlab']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE INPUT FILES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-networkFile = ['challenge' filesep 'network_iNet1_Size50_CC03.txt'];
-scoresFile = ['challenge' filesep 'scores_iNet1_Size50_CC03.txt'];
+baseFile = 'iNet1_Size100_CC03';
+
+networkFile = ['challenge' filesep 'network_' baseFile '.txt'];
+scoresFile = ['challenge' filesep 'scores_' baseFile '.txt'];
 
 
 %% Load the network and the scores
@@ -39,3 +41,8 @@ scores = load(scoresFile);
 %% Calculate the ROC curve and plot it
 figure;
 [AUC, FPR, TPR, TPRatMark, raw] = calculateROC(network, scores, 'plot', true);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+MSG = 'Challenge validated.';
+disp([datestr(now, 'HH:MM:SS'), ' ', MSG]);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

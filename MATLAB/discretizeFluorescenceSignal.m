@@ -20,7 +20,7 @@ function [D, G] = discretizeFluorescenceSignal(F, varargin)
 %
 %    'conditioningLevel' - Value used for conditioning. If the
 %    value is 0 the level is guessed (for now, the peak of the histogram
-%    plus 0.1). Set it to inf to avoid conditioning (default 0).
+%    plus 0.05). Set it to inf to avoid conditioning (default 0).
 %
 %   'highPassFilter' - (true/false). Apply a high pass filter to the
 %   fluorescence signal, i.e., work with the derivative (default true).
@@ -57,7 +57,7 @@ avgF = mean(F,2);
 if(params.conditioningLevel == 0)
     [hits, pos] = hist(avgF, 100);
     [~, idx] = max(hits);
-    CL = pos(idx)+0.1;
+    CL = pos(idx)+0.05;
     fprintf('Best guess for conditioning found at: %.2f\n', CL);
 else
     CL = params.conditioningLevel;
@@ -81,7 +81,8 @@ end
 %%% Apply the high pass filter
 if(params.highPassFilter)
     F = diff(F);
-    G = G(1:end-1);
+    %G = G(1:end-1);
+    G = G(2:end);
 end
 
 %%% Discretize the signal

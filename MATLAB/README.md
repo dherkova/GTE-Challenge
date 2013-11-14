@@ -50,7 +50,6 @@ The MATLAB scripts rely heavily on the following structures:
    challenge. (AUC = 1 perfect reconstruction, 0.5 completely random).
 
 ## Included Scripts
-Every script is fully documented, look inside the file.
 
 ### reconstruction
 Main script. Loads a NEST file and performs all the necessary steps to
@@ -100,6 +99,9 @@ obtained.
 Calculates the ROC by comparing the GTE scores with the real network.
 
 ## History
+
+### November 14, 2013
+Fixed the main bug in GTE calculation, now it works as expected.
 
 ### November 12, 2013
 Added independent scripts for: challenge generation, the challenge

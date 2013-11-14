@@ -25,17 +25,19 @@ path(path, [challengeFolder 'external' filesep 'YAMLMatlab']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE INPUT FILES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-networkFile = ['topologies' filesep 'topology_iNet1_Size50_CC03.yaml'];
-indicesFile = ['spikes' filesep 'indices_iNet1_Size50_CC03.dat'];
-timesFile = ['spikes' filesep 'times_iNet1_Size50_CC03.dat'];
+baseFile = 'iNet1_Size100_CC03';
+
+networkFile = ['topologies' filesep 'topology_' baseFile '.yaml'];
+indicesFile = ['spikes' filesep 'indices_' baseFile '.dat'];
+timesFile = ['spikes' filesep 'times_' baseFile '.dat'];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE OUTPUT FILES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-outputNetworkFile = ['challenge' filesep 'network_iNet1_Size50_CC03.txt'];
-outputNetworkPositionskFile = ['challenge' filesep 'networkPositions_iNet1_Size50_CC03.txt'];
-outputFluorescenceFile = ['challenge' filesep 'fluorescence_iNet1_Size50_CC03.txt'];
-outputCommentsFile = ['challenge' filesep 'comments_iNet1_Size50_CC03.txt'];
+outputNetworkFile = ['challenge' filesep 'network_' baseFile '.txt'];
+outputNetworkPositionskFile = ['challenge' filesep 'networkPositions_' baseFile '.txt'];
+outputFluorescenceFile = ['challenge' filesep 'fluorescence_' baseFile '.txt'];
+outputCommentsFile = ['challenge' filesep 'comments_' baseFile '.txt'];
 
 %% Load spiking data and generate the fluorescence signal
 
@@ -77,7 +79,7 @@ fprintf(fID, '# Fluorescence discretization step: %d ms\n', 20);
 fclose(fID);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-MSG = 'Done!';
+MSG = 'Challenge generated.';
 disp([datestr(now, 'HH:MM:SS'), ' ', MSG]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

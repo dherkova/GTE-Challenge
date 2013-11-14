@@ -57,9 +57,9 @@ params.tau_Ca = 1; % s
 params.A_Ca = 50; % uM
 params.K_d = 300; % uM
 params.noise_str = 0.03;
-params.lightScattering = false;
+params.lightScattering = true;
 params.amplitudeScatter = 0.15;
-params.sigmaScatter = 0.15;
+params.sigmaScatter = 0.05;
 params.Trange = [];
 params = parse_pv_pairs(params,varargin); 
 
@@ -87,15 +87,21 @@ for i = 1:length(network.RS);
 end
 
 %%% Apply Light Scattering
+% Define the Light Scattering amplitudes
 if(params.lightScattering)
-    FS = zeros(length(T),length(network.RS));
+    LSAmplitudes = zeros(size(network.RS));
+    FS = F;
     for i = 1:length(network.RS);
         dist = sqrt((network.X-network.X(i)).^2+(network.Y-network.Y(i)).^2);
-        Fmult = zeros(size(F));
-        for j = 1:length(network.RS);
-            Fmult(:,j) = F(:,j)*exp(-(dist(j)/params.sigmaScatter)^2);
+        for j = (i+1):length(network.RS);
+            LSAmplitudes(i,j) = params.amplitudeScatter*exp(-(dist(j)/params.sigmaScatter)^2);
+            LSAmplitudes(j,i) = LSAmplitudes(i,j);
         end
-        FS(:,i) = F(:,i) + params.amplitudeScatter*(sum(Fmult,2)-F(:,i));
+    end
+    for i = 1:length(network.RS);
+        for j = 1:length(network.RS);
+           FS(:, i) =  FS(:, i)+F(:,j)*LSAmplitudes(i,j);
+        end
     end
     F = FS;
 end

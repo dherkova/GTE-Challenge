@@ -25,9 +25,11 @@ path(path, [challengeFolder 'external' filesep 'YAMLMatlab']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE INPUT FILES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-networkFile = ['topologies' filesep 'topology_iNet1_Size50_CC03.yaml'];
-indicesFile = ['spikes' filesep 'indices_iNet1_Size50_CC03.dat'];
-timesFile = ['spikes' filesep 'times_iNet1_Size50_CC03.dat'];
+baseFile = 'iNet1_Size50_CC03';
+
+networkFile = ['topologies' filesep 'topology_' baseFile '.yaml'];
+indicesFile = ['spikes' filesep 'indices_' baseFile '.dat'];
+timesFile = ['spikes' filesep 'times_' baseFile '.dat'];
 
 %% Load spiking data and generate the fluorescence signal
 
@@ -47,7 +49,7 @@ F = F(minT:end, :);
 
 
 %% Discretize the fluorescence signal
-[D, G] = discretizeFluorescenceSignal(F, 'debug', true);
+[D, G] = discretizeFluorescenceSignal(F, 'debug', true, 'conditioningLevel', 0.25, 'bins', [-10,0.12,10]);
 
 %% Calculate the joint PDF
 P = calculateJointPDFforGTE(D, G);

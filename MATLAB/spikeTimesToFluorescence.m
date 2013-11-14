@@ -74,14 +74,15 @@ end
 Ca = zeros(size(T));
 
 %%% Iterate through all the spikes
-% Not the best code, but hey. TODO: This can be calculated exactly.
 i = 1;
 nextSpike = spikeTimes(i);
-for step = 2:length(T)
-    Ca(step) = Ca(step-1)*(1 - dt/tau_Ca);
+step = 2;
+while(step < length(T))
     % If this dt we have a spike, update the Ca signal accordingly
-    if(T(step) > nextSpike)
-        Ca(step) = Ca(step-1) + A_Ca;
+    while(T(step) > nextSpike)
+        %Ca(step) = Ca(step-1) + A_Ca;
+        % Exact solution
+        Ca(step) = Ca(step)+A_Ca*exp(-(T(step)-nextSpike)/tau_Ca);
         i = i+1;
         if(i < length(spikeTimes))
             nextSpike = spikeTimes(i+1);
@@ -89,8 +90,11 @@ for step = 2:length(T)
             nextSpike = inf;
         end
     end
+    %Ca(step) = Ca(step-1)*(1 - dt/tau_Ca);
+    % Exact solution
+    Ca(step) = Ca(step)+Ca(step-1)*exp(-dt/tau_Ca);
+    step = step+1;
 end
 
 %%% Now create the fluorescence signal
 F = Ca./(Ca+K_d)+noise_str*randn(size(Ca));
-

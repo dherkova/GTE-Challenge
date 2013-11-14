@@ -25,18 +25,20 @@ path(path, [challengeFolder 'external' filesep 'YAMLMatlab']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE INPUT FILES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fluorescenceFile = ['challenge' filesep 'fluorescence_iNet1_Size50_CC03.txt'];
+baseFile = 'iNet1_Size100_CC03';
+
+fluorescenceFile = ['challenge' filesep 'fluorescence_' baseFile '.txt'];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE OUTPUT FILES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-scoresFile = ['challenge' filesep 'scores_iNet1_Size50_CC03.txt'];
+scoresFile = ['challenge' filesep 'scores_' baseFile '.txt'];
 
 %% Load the Fluorescence signal
 F = load(fluorescenceFile);
 
 %% Discretize the fluorescence signal
-[D, G] = discretizeFluorescenceSignal(F, 'debug', true);
+[D, G] = discretizeFluorescenceSignal(F, 'debug', true, 'conditioningLevel', 0.25, 'bins', [-10,0.12,10]);
 
 %% Calculate the joint PDF
 P = calculateJointPDFforGTE(D, G);
@@ -49,4 +51,9 @@ GTE = calculateGTEfromJointPDF(P);
 scores = GTE;
 dlmwrite(scoresFile, scores, ',');
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+MSG = 'Challenge solved.';
+disp([datestr(now, 'HH:MM:SS'), ' ', MSG]);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

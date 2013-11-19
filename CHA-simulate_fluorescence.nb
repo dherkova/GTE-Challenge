@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     42505,        828]
-NotebookOptionsPosition[     42005,        805]
-NotebookOutlinePosition[     42361,        821]
-CellTagsIndexPosition[     42318,        818]
+NotebookDataLength[     49229,       1005]
+NotebookOptionsPosition[     48687,        981]
+NotebookOutlinePosition[     49043,        997]
+CellTagsIndexPosition[     49000,        994]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -23,6 +23,182 @@ Cell[CellGroupData[{
 Cell["init", "Section",
  InitializationCell->True,
  CellChangeTimes->{{3.550208402375211*^9, 3.550208404690795*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ImportNetworkFromYAML", "[", "filename_String", "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "instream", ",", "cfrom", ",", "j", ",", "ctolist", ",", "ctolistW", 
+       ",", "adjA", ",", "adjAW", ",", "poslist", ",", "pars", ",", 
+       RowBox[{"weightedQ", "=", "False"}]}], "}"}], ",", "\n", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+      "make", " ", "sure", " ", "converter", " ", "and", " ", "input", " ", 
+       "file", " ", "exist"}], " ", "*)"}], "\n", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"!", 
+          RowBox[{
+          "FileExistsQ", "[", 
+           "\"\</Users/olav/Desktop/Doktorarbeit/Simulationen/networktest4/\
+20090924/C1_05\>\"", "]"}]}], ",", 
+         RowBox[{"Abort", "[", "]"}]}], "]"}], ";"}], " ", "*)"}], "\n", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"!", 
+         RowBox[{"FileExistsQ", "[", "filename", "]"}]}], ",", 
+        RowBox[{
+         RowBox[{"Print", "[", "\"\<File not found!\>\"", "]"}], ";", 
+         RowBox[{"Abort", "[", "]"}]}]}], "]"}], ";", "\n", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "load", " ", "yaml", " ", "file", " ", "in", " ", "raw", " ", "form"}],
+        " ", "*)"}], "\n", 
+      RowBox[{"instream", "=", 
+       RowBox[{"First", "@", 
+        RowBox[{"RunThrough", "[", 
+         RowBox[{
+          RowBox[{
+          "\"\<~/Desktop/Doktorarbeit/Simulationen/yaml2mx \>\"", "<>", 
+           "filename"}], ",", "\"\<\>\""}], "]"}]}]}], ";", "\n", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"Print", "[", 
+         RowBox[{"pars", "=", 
+          RowBox[{"Sort", "@", 
+           RowBox[{"DeleteCases", "[", 
+            RowBox[{"instream", ",", 
+             RowBox[{"nodes", "->", "_"}]}], "]"}]}]}], "]"}], ";"}], "*)"}], 
+      "\n", 
+      RowBox[{"pars", "=", 
+       RowBox[{"Sort", "@", 
+        RowBox[{"DeleteCases", "[", 
+         RowBox[{"instream", ",", 
+          RowBox[{
+           RowBox[{"Symbol", "[", "\"\<nodes\>\"", "]"}], "->", "_"}]}], 
+         "]"}]}]}], ";", "\n", "\n", 
+      RowBox[{"adjA", "=", 
+       RowBox[{"adjAW", "=", 
+        RowBox[{"SparseArray", "[", 
+         RowBox[{
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Symbol", "[", "\"\<size\>\"", "]"}], "/.", "pars"}], 
+            ",", 
+            RowBox[{
+             RowBox[{"Symbol", "[", "\"\<size\>\"", "]"}], "/.", "pars"}]}], 
+           "}"}], ",", "0"}], "]"}]}]}], ";", "\n", 
+      RowBox[{"poslist", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", "0"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Symbol", "[", "\"\<size\>\"", "]"}], "/.", "pars"}], 
+          "}"}]}], "]"}]}], ";", "\n", 
+      RowBox[{"instream", "=", 
+       RowBox[{
+        RowBox[{"Symbol", "[", "\"\<nodes\>\"", "]"}], "/.", "instream"}]}], 
+      ";", "\n", 
+      RowBox[{"For", "[", 
+       RowBox[{
+        RowBox[{"cfrom", "=", "1"}], ",", 
+        RowBox[{"cfrom", "<=", 
+         RowBox[{"Length", "@", "instream"}]}], ",", 
+        RowBox[{"cfrom", "++"}], ",", "\n", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"poslist", "[", 
+           RowBox[{"[", "cfrom", "]"}], "]"}], "=", 
+          RowBox[{
+           RowBox[{"Symbol", "[", "\"\<pos\>\"", "]"}], "/.", 
+           RowBox[{"instream", "[", 
+            RowBox[{"[", "cfrom", "]"}], "]"}]}]}], ";", "\n", 
+         RowBox[{"(*", " ", 
+          RowBox[{
+           RowBox[{"for", " ", "now"}], ",", " ", 
+           RowBox[{
+           "assume", " ", "all", " ", "nodes", " ", "are", " ", "present", 
+            " ", "here", " ", "and", " ", "that", " ", "they", " ", "are", 
+            " ", "presented", " ", "in", " ", "order"}]}], " ", "*)"}], "\n", 
+         
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"Symbol", "[", "\"\<id\>\"", "]"}], "/.", "instream"}], 
+             ")"}], "!=", "cfrom"}], ",", 
+           RowBox[{"Abort", "[", "]"}]}], "]"}], ";", "\n", 
+         RowBox[{"ctolist", "=", 
+          RowBox[{
+           RowBox[{"Symbol", "[", "\"\<connectedTo\>\"", "]"}], "/.", 
+           RowBox[{"instream", "[", 
+            RowBox[{"[", "cfrom", "]"}], "]"}]}]}], ";", "\n", 
+         RowBox[{"For", "[", 
+          RowBox[{
+           RowBox[{"j", "=", "1"}], ",", 
+           RowBox[{"j", "<=", 
+            RowBox[{"Length", "@", "ctolist"}]}], ",", 
+           RowBox[{"j", "++"}], ",", 
+           RowBox[{
+            RowBox[{"adjA", "[", 
+             RowBox[{"[", 
+              RowBox[{"cfrom", ",", 
+               RowBox[{"ctolist", "[", 
+                RowBox[{"[", "j", "]"}], "]"}]}], "]"}], "]"}], "=", "1"}]}], 
+          "]"}], ";", "\n", 
+         RowBox[{"ctolistW", "=", 
+          RowBox[{
+           RowBox[{"Symbol", "[", "\"\<weight\>\"", "]"}], "/.", 
+           RowBox[{"instream", "[", 
+            RowBox[{"[", "cfrom", "]"}], "]"}]}]}], ";", "\n", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"ctolistW", "!=", 
+            RowBox[{"Symbol", "[", "\"\<weight\>\"", "]"}]}], ",", 
+           RowBox[{"weightedQ", "=", "True"}]}], "]"}], ";", "\n", 
+         RowBox[{"If", "[", 
+          RowBox[{"weightedQ", ",", " ", 
+           RowBox[{"For", "[", 
+            RowBox[{
+             RowBox[{"j", "=", "1"}], ",", 
+             RowBox[{"j", "<=", 
+              RowBox[{"Length", "@", "ctolist"}]}], ",", 
+             RowBox[{"j", "++"}], ",", 
+             RowBox[{
+              RowBox[{"adjAW", "[", 
+               RowBox[{"[", 
+                RowBox[{"cfrom", ",", 
+                 RowBox[{"ctolist", "[", 
+                  RowBox[{"[", "j", "]"}], "]"}]}], "]"}], "]"}], "=", 
+              RowBox[{"ctolistW", "[", 
+               RowBox[{"[", "j", "]"}], "]"}]}]}], "]"}]}], " ", "]"}], 
+         ";"}]}], "\n", "]"}], ";", "\n", "\n", 
+      RowBox[{"If", "[", 
+       RowBox[{"weightedQ", ",", "\n", 
+        RowBox[{
+         RowBox[{"Return", "[", 
+          RowBox[{"{", 
+           RowBox[{"adjA", ",", "adjAW", ",", "poslist", ",", "pars"}], "}"}],
+           "]"}], ";"}], "\n", ",", "\n", 
+        RowBox[{
+         RowBox[{"Return", "[", 
+          RowBox[{"{", 
+           RowBox[{"adjA", ",", "poslist", ",", "pars"}], "}"}], "]"}], 
+         ";"}]}], "\n", "]"}], ";"}]}], "\n", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{3.593851536466126*^9},
+ TextAlignment->AlignmentMarker],
 
 Cell[BoxData[
  RowBox[{
@@ -823,12 +999,13 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[579, 22, 116, 2, 67, "Section",
  InitializationCell->True],
-Cell[698, 26, 36119, 646, 1746, "Input",
+Cell[698, 26, 6679, 174, 478, "Input"],
+Cell[7380, 202, 36119, 646, 1746, "Input",
  InitializationCell->True]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[36854, 677, 163, 2, 37, "Section"],
-Cell[37020, 681, 4969, 121, 418, "Input"]
+Cell[43536, 853, 163, 2, 37, "Section"],
+Cell[43702, 857, 4969, 121, 418, "Input"]
 }, Open  ]]
 }
 ]

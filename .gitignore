@@ -1,7 +1,6 @@
 .DS_Store
 *.tgz
 
-
 documentation/*.log
 documentation/*.aux
 documentation/*.bbl
@@ -21,4 +20,9 @@ reconstructions/qsubjob*
 
 roc_curves/
 
+spikes/
+
 topologies/
+
+tests/
+

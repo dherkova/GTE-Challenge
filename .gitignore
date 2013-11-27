@@ -1,4 +1,8 @@
+.DS_Store
 *.tgz
+
+# This is for files which are used to prepare the final challenge
+*-hidden.nb
 
 documentation/*.log
 documentation/*.aux

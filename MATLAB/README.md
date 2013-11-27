@@ -8,6 +8,7 @@ respective pages for more details:
 1. [YAMLMatlab](https://code.google.com/p/yamlmatlab/)
 2. [parse_pv_pairs](http://www.mathworks.com/matlabcentral/fileexchange/9082-parsepvpairs)
 3. [sshist](http://www.mathworks.com/matlabcentral/fileexchange/24913-histogram-binwidth-optimization)
+4. [colormap utilities](http://www.mathworks.es/matlabcentral/fileexchange/24371-colormap-and-colorbar-utilities-sep-2009)
 
 ## Notes
 Remember to add the external dependencies to your path:

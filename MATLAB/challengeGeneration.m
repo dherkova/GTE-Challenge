@@ -27,9 +27,9 @@ path(path, [challengeFolder 'external' filesep 'YAMLMatlab']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 baseFile = 'iNet1_Size100_CC03';
 
-networkFile = ['topologies' filesep 'topology_' baseFile '.yaml'];
-indicesFile = ['spikes' filesep 'indices_' baseFile '.dat'];
-timesFile = ['spikes' filesep 'times_' baseFile '.dat'];
+networkFile = ['../topologies' filesep 'topology_' baseFile '.yaml'];
+indicesFile = ['../spikes' filesep 'indices_' baseFile '.dat'];
+timesFile = ['../spikes' filesep 'times_' baseFile '.dat'];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% DEFINE THE OUTPUT FILES

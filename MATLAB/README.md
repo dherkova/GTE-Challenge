@@ -10,12 +10,17 @@ respective pages for more details:
 3. [sshist](http://www.mathworks.com/matlabcentral/fileexchange/24913-histogram-binwidth-optimization)
 4. [colormap utilities](http://www.mathworks.es/matlabcentral/fileexchange/24371-colormap-and-colorbar-utilities-sep-2009)
 
+If you want to visualize the networks you are better off using
+[Gephi](http://www.gephi.org) and using the provided `networkToGEXF`
+function to transform the provided networks to GEXF format. Seriouslly,
+use it. It's free and it's easy. Just load the GEXF file and play!
+
 ## Notes
 Remember to add the external dependencies to your path:
 
         path(path,'/yourPathToGTE-Challenge/MATLAB/external');
         path(path,'/yourPathToGTE-Challenge/MATLAB/external/YAMLMatlab');
-
+        path(path,'cm_and_cb_utilities');
 The MATLAB scripts rely heavily on the following structures:
 
 * **network**
@@ -42,10 +47,13 @@ The MATLAB scripts rely heavily on the following structures:
 1. Load the script `challengeGeneration.m`. This script creates the
    files that will be used by the challenge participants based on the
    NEST and network files provided by Olav.
-2. Load the script `challengeExample.m`. This script is an example of a
+2. Load the script `challengeVisualization.m`. This script loads
+   fluorescence and network data and uses the available plotting scripts
+   to visualize the dynamics.
+3. Load the script `challengeExample.m`. This script is an example of a
    Challenge submission, it uses only the files generated in the
    previous script and produces a matrix with scores as output.
-3. Load the script `challengeValidation.m`. This script compares the
+4. Load the script `challengeValidation.m`. This script compares the
    scoring matrix with the true topology through the ROC curve. The AUC
    and the TPR at 10% are the main observables to be checke in the
    challenge. (AUC = 1 perfect reconstruction, 0.5 completely random).
@@ -58,6 +66,10 @@ obtain the reconstruction.
 
 ### challengeGeneration
 This script generates the data for the challenge (fluorescence and network structure). Note: The network and spike data have been created a priori.
+
+### challengeVisualization
+Loads fluorescence and network data and plots it using different options
+and views.
 
 ### challengeExample
 Example of a challenge submission. Loads the provided fluorescence file
@@ -99,7 +111,23 @@ obtained.
 ### calculateROC 
 Calculates the ROC by comparing the GTE scores with the real network.
 
+### networkToGEXF
+Converts a MATLAB network structure into a GEXF file so it can be read with GEPHI
+
+### visualizeFluorescenceTimeSeries
+Plots in the current figure the fluorescence time series. See the options for a detailed usage.
+
+### visualizePair
+Plots the time series of a pair of neurons I and J and tells you the I->J and J->I connetion weights.
+
+### visualizeFluorescenceMovie
+Creates a movie from the fluorescence data similar to the one obtained in the experiments
+
+
 ## History
+
+### November 29, 2013
+Added visualization scripts and a GEXF network converter.
 
 ### November 14, 2013
 Fixed the main bug in GTE calculation, now it works as expected.
@@ -109,15 +137,12 @@ Added independent scripts for: challenge generation, the challenge
 itself and validation.
 
 ### November 11, 2013
-
 Added the remaining scripts. Now there is enough to go from NEST
 input to the reconstruction.
 
 ### November 8, 2013
-
 Adding more scripts.
 
 ### November 7, 2013
-
 First version. Adding some scripts and readme file.
 

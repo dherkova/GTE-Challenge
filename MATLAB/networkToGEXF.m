@@ -1,6 +1,6 @@
 function networkToGEXF(network, filename, varargin)
 % NETWORKTOGEXF converts a MATLAB network structure into a GEXF file so it
-% can be read with GEPTHI
+% can be read with GEPHI
 %
 % USAGE:
 %    networkToGEXF(network, fileName, varargin)

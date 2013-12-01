@@ -13,6 +13,7 @@ import time
 import yaml
 import NEST_meta_routines as nest_meta
 
+from BoundedAdaptation import *
 
 
 
@@ -54,7 +55,7 @@ assert filestream.closed
 # --- adaptation phase ---
 print "Starting adaptation phase..."
 weight = INITIAL_WEIGHT_JE
-burst_rate = 0.0
+burst_rate = -1
 adaptation_iteration = 1
 last_burst_rates = []
 last_JEs = []
@@ -63,56 +64,23 @@ lower_bound_on_weight = 0.0
 upper_bound_on_burst_rate = 1000.0
 lower_bound_on_burst_rate = 0.0
 
+print "\n----------------------------- adaptation phase -----------------------------"
+adaptation_runner = BoundedAdaptationRunner(0.0, 100.0, 0.0, 100.0, INITIAL_WEIGHT_JE, TARGET_BURST_RATE)
 while abs(burst_rate-TARGET_BURST_RATE)>TARGET_BURST_RATE_ACCURACY_GOAL:
-  old_weight = weight
-  if len(last_burst_rates)<2 or last_burst_rates[-1] == last_burst_rates[-2]:
-    if len(last_burst_rates)>0:
-      print "\n----------------------------- auto-burst stage II.) changing weight by 10% -----------------------------"
-      if burst_rate > TARGET_BURST_RATE:
-        weight *= 0.9
-      else:
-        weight *= 1.1
-    else:
-      print "\n----------------------------- auto-burst stage I.) initial run -----------------------------"
-  else:
-    print "\n----------------------------- auto-burst stage III.) linear extrapolation -----------------------------"
-    # this assumes a monotonic relation between synaptic weight and burst rate
-    weight = ((TARGET_BURST_RATE-last_burst_rates[-2])*(last_JEs[-1]-last_JEs[-2]) / (last_burst_rates[-1]-last_burst_rates[-2])) + last_JEs[-2]
-
-  # apply previously found bounds to avoid oscillations
-  if weight > upper_bound_on_weight or weight < lower_bound_on_weight:
-    print "-> extrapolated weight {w} out of best found bounds, resetting...".format(w=weight)
-    weight = 0.5*(lower_bound_on_weight + upper_bound_on_weight)
-  assert weight > 0.
-  # print("DEBUG: bounds on weight right now: {low} -- {high}".format(low=lower_bound_on_weight,high=upper_bound_on_weight))
-  # print("DEBUG: bounds on burst rate right now: {low} -- {high}".format(low=lower_bound_on_burst_rate,high=upper_bound_on_burst_rate))
-  
+  weight = adaptation_runner.next(burst_rate)
   print "adaptation #"+str(adaptation_iteration)+": setting weight to "+str(weight)+" ..."
+  # Start test simulation
   [size,cons,neuronsE,espikes,noise,GIDoffset] = nest_meta.go_create_network(yamlobj,weight,WEIGHT_NOISE,NOISE_RATE)
   nest.Simulate(ADAPTATION_SIMULATION_TIME)
   tauMS = 50
   burst_rate = nest_meta.determine_burst_rate(nest.GetStatus(espikes, "events")[0]["senders"].flatten().tolist(), nest.GetStatus(espikes, "events")[0]["times"].flatten().tolist(), tauMS, ADAPTATION_SIMULATION_TIME, size)
   print "-> the burst rate is "+str(burst_rate)+" Hz"
-  # update bounds on burst_rate
-  if burst_rate > TARGET_BURST_RATE:
-    if burst_rate < upper_bound_on_burst_rate or (burst_rate==upper_bound_on_burst_rate and weight<upper_bound_on_weight):
-      print "-> new upper bound for burst rate and weight found."
-      upper_bound_on_burst_rate = burst_rate
-      upper_bound_on_weight = weight
-  else:
-    if burst_rate > lower_bound_on_burst_rate or (burst_rate==lower_bound_on_burst_rate and weight>lower_bound_on_weight):
-      print "-> new lower bound for burst rate and weight found."
-      lower_bound_on_burst_rate = burst_rate
-      lower_bound_on_weight = weight
-  
-  adaptation_iteration += 1
-  last_burst_rates.append(burst_rate)
-  last_JEs.append(weight)
   assert adaptation_iteration < MAX_ADAPTATION_ITERATIONS
 
-print "\n----------------------------- auto-burst stage IV.) actual simulation -----------------------------"
+print "\n----------------------------- actual simulation -----------------------------"
 [size,cons,neuronsE,espikes,noise,GIDoffset] = nest_meta.go_create_network(yamlobj,weight,WEIGHT_NOISE,NOISE_RATE)
 endbuild = time.time()
+
 
 # --- simulate ---
 print "Simulating..."

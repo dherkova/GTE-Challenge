@@ -82,10 +82,32 @@ def determine_burst_rate(xindex, xtimes, tauMS, total_timeMS, size):
     return 1./(float(tauMS)/1000.*float(sum(IBIsList))/float(len(IBIsList)))
 
 
-def go_create_network(yamlobj, weight, JENoise, noise_rate, print_output=False, fraction_of_connections=1.0, block_inh=False, block_exc=False):
+def go_create_network(yamlobj, weight, JENoise, noise_rate, print_output=False, fraction_of_connections=1.0, subnetwork_index_in_YAML=-1, block_inh=False, block_exc=False):
+  weights_are_given_as_array_for_each_subnet = hasattr(weight, "insert")
   size = yamlobj.get('size')
   cons = yamlobj.get('cons')
-  print "-> We have a network of "+str(size)+" nodes and "+str(cons)+" connections."
+  print "-> We have a network of "+str(size)+" nodes and "+str(cons)+" connections overall."
+  if block_inh:
+    print "-> Inhibitory synapses blocked."
+  if block_exc:
+    print "-> Excitatory synapses blocked."
+  YAML_ID_offset = 0
+  if subnetwork_index_in_YAML >= 0:
+    # Collect list of cell indices that belong to the right subnetwork
+    subnetwork_indices = []
+    for i in range(len(yamlobj.get('nodes'))): # i starts counting at 0
+      thisnode = yamlobj.get('nodes')[i]
+      if thisnode.has_key('subset') and (thisnode.get('subset') == subnetwork_index_in_YAML):
+        subnetwork_indices.append(i)
+      # print "DEBUG: node with ID {id} has subset key {s}".format(id=thisnode.get('id'), s=thisnode.get('subset'))
+    # Right now the logic later only works of the subnetworks is a continuous range of IDs,
+    # so make sure that that is really the case.
+    assert len(subnetwork_indices) > 0
+    assert subnetwork_indices == range(min(subnetwork_indices), max(subnetwork_indices)+1)
+    size = len(subnetwork_indices)
+    YAML_ID_offset = min(subnetwork_indices)
+    print "-> Limiting construction to subnetwork #"+str(subnetwork_index_in_YAML)+" ("+str(size)+" neurons, YAML ID offset "+str(YAML_ID_offset)+")."
+  
   print "Resetting and creating network..."
   nest.ResetKernel()
   nest.SetKernelStatus({"resolution": 0.1, "print_time": False, "overwrite_files":True})
@@ -99,7 +121,10 @@ def go_create_network(yamlobj, weight, JENoise, noise_rate, print_output=False, 
   nest.ConvergentConnect(neuronsE, espikes)
   # Warning: delay is overwritten later if weights are given in the YAML file!
   nest.SetDefaults("tsodyks_synapse", DEFAULT_TSODYKS_SYNAPSE_PARAMETERS)
-  nest.CopyModel("tsodyks_synapse","exc",{"weight":weight})
+  if weights_are_given_as_array_for_each_subnet:
+    nest.CopyModel("tsodyks_synapse", "exc", {"weight": weight[0]}) # will anyway be reset later
+  else:
+    nest.CopyModel("tsodyks_synapse", "exc", {"weight": weight})
   nest.CopyModel("static_synapse","poisson",{"weight":JENoise})
   nest.DivergentConnect(noise,neuronsE,model="poisson")
   # print "Loading connections from YAML file..."
@@ -113,29 +138,42 @@ def go_create_network(yamlobj, weight, JENoise, noise_rate, print_output=False, 
   
   for i in range(len(yamlobj.get('nodes'))): # i starts counting at 0
     thisnode = yamlobj.get('nodes')[i]
-    # ID starts counting with 1, so substract one later to get to index starting with 0
-    cfrom = int(thisnode.get('id')) - 1
+    # Make sure neurons are ordered
+    assert int(thisnode.get('id')) == i + 1
     # Quick fix: make sure we are reading the neurons in order and that none is skipped
-    assert cfrom == neuronsE[cfrom] - GIDoffset
-    assert i == cfrom
-    if thisnode.has_key('connectedTo'):
-      cto_list = thisnode.get('connectedTo')
-      # again, substract 1 as for cfrom
-      cto_list = [x-1 for x in cto_list]
-      for j in range(len(cto_list)):
-        if random.random() <= fraction_of_connections: # choose only subset of connections
-          if thisnode.has_key('weights'):
-            assert( len(thisnode.get('weights')) == len(cto_list) )
-            # Using the "weights" array in the YAML file, we can construct exc. and inh. synapses
-            weight_here = weight*thisnode.get('weights')[j]
-            if (weight_here > 0.0 and !block_exc) or (weight_here < 0.0 and !block_inh):
-              nest.Connect([neuronsE[cfrom]], [neuronsE[int(cto_list[j])]], weight_here, 1.5, model="exc")
-          else:
-            if !block_exc:
-              nest.Connect([neuronsE[cfrom]], [neuronsE[int(cto_list[j])]], model="exc")
-          added_connections = added_connections+1
-          if print_output:
-            print "-> added connection: from #"+str(cfrom)+" to #"+str(int(cto_list[j]))
+    # print "DEBUG: iterator = "+str(i)+", cfrom = "+str(cfrom)
+    if subnetwork_index_in_YAML < 0 or thisnode.get('subset') == subnetwork_index_in_YAML:
+      # ID starts counting with 1, so substract one later to get to index starting with 0
+      cfrom = int(thisnode.get('id')) - 1 - YAML_ID_offset
+      # assert cfrom == neuronsE[cfrom] - GIDoffset
+      # assert i == cfrom
+      if thisnode.has_key('connectedTo'):
+        cto_list = thisnode.get('connectedTo')
+        for j in range(len(cto_list)):
+          # again, substract 1 as for cfrom
+          cto = int(cto_list[j]) - 1 - YAML_ID_offset
+          if random.random() <= fraction_of_connections: # choose only subset of connections
+            weight_here = 0.0
+            # Set up case flags for later (just for readability)
+            weights_are_given_in_YAML = thisnode.has_key('weights')
+            subnet_index_is_given_in_YAML = thisnode.has_key('subset')
+            # Initialize weight with value supplied as argument to fn. call
+            if weights_are_given_as_array_for_each_subnet:
+              assert subnet_index_is_given_in_YAML
+              weight_here = weight[thisnode.get('subset')-1]
+            else:
+              weight_here = weight
+            # Factor in weight given in the YAML file, if any
+            if weights_are_given_in_YAML:
+              assert len(thisnode.get('weights')) == len(cto_list)
+              weight_here *= thisnode.get('weights')[j]
+            # Create connection unless it's out of the subnet or the type of synapse is blocked
+            if (cto >= 0) and (cto < size):
+              if (weight_here > 0.0 and not(block_exc)) or (weight_here < 0.0 and not(block_inh)):
+                nest.Connect([neuronsE[cfrom]], [neuronsE[cto]], weight_here, 1.5, model="exc")
+                if print_output:
+                  print "-> added connection: from #"+str(cfrom)+" to #"+str(cto)+" with weight "+str(weight_here)
+                added_connections = added_connections+1
   
   print "-> "+str(added_connections)+" out of "+str(cons)+" connections (in YAML source) created."
-  return [size,cons,neuronsE,espikes,noise,GIDoffset]
+  return [size, added_connections, neuronsE, espikes, noise, GIDoffset]

@@ -31,12 +31,12 @@ class BoundedAdaptationRunner:
     if self.__iteration_count() > 0:
       # Update bounds
       if last_value_of_y > self.target_value_of_y:
-        if last_value_of_y < self.bounds_upper_y or (last_value_of_y==self.bounds_upper_y and self.last_x_values[-1]<self.bounds_upper_x):
+        if last_value_of_y < self.bounds_upper_y or (last_value_of_y==self.bounds_upper_y and self.last_x_values[-1]<self.bounds_right_x):
           print "DEBUG: New upper bound found."
           self.bounds_upper_y = last_value_of_y
           self.bounds_right_x = self.last_x_values[-1]
       else:
-        if last_value_of_y > self.bounds_lower_y or (last_value_of_y==self.bounds_lower_y and self.last_x_values[-1]>self.bounds_lower_x):
+        if last_value_of_y > self.bounds_lower_y or (last_value_of_y==self.bounds_lower_y and self.last_x_values[-1]>self.bounds_left_x):
           print "DEBUG: New lower bound found."
           self.bounds_lower_y = last_value_of_y
           self.bounds_left_x = self.last_x_values[-1]

@@ -82,7 +82,7 @@ def determine_burst_rate(xindex, xtimes, tauMS, total_timeMS, size):
     return 1./(float(tauMS)/1000.*float(sum(IBIsList))/float(len(IBIsList)))
 
 
-def go_create_network(yamlobj,weight,JENoise,noise_rate,print_output=False,fraction_of_connections=1.0):
+def go_create_network(yamlobj, weight, JENoise, noise_rate, print_output=False, fraction_of_connections=1.0, block_inh=False, block_exc=False):
   size = yamlobj.get('size')
   cons = yamlobj.get('cons')
   print "-> We have a network of "+str(size)+" nodes and "+str(cons)+" connections."
@@ -126,9 +126,13 @@ def go_create_network(yamlobj,weight,JENoise,noise_rate,print_output=False,fract
         if random.random() <= fraction_of_connections: # choose only subset of connections
           if thisnode.has_key('weights'):
             assert( len(thisnode.get('weights')) == len(cto_list) )
-            nest.Connect([neuronsE[cfrom]],[neuronsE[int(cto_list[j])]],weight*thisnode.get('weights')[j],1.5,model="exc")
+            # Using the "weights" array in the YAML file, we can construct exc. and inh. synapses
+            weight_here = weight*thisnode.get('weights')[j]
+            if (weight_here > 0.0 and !block_exc) or (weight_here < 0.0 and !block_inh):
+              nest.Connect([neuronsE[cfrom]], [neuronsE[int(cto_list[j])]], weight_here, 1.5, model="exc")
           else:
-            nest.Connect([neuronsE[cfrom]],[neuronsE[int(cto_list[j])]],model="exc")
+            if !block_exc:
+              nest.Connect([neuronsE[cfrom]], [neuronsE[int(cto_list[j])]], model="exc")
           added_connections = added_connections+1
           if print_output:
             print "-> added connection: from #"+str(cfrom)+" to #"+str(int(cto_list[j]))

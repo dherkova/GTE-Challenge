@@ -29,8 +29,7 @@ def uniq(sequence): # Not order preserving!
   return list(set(sequence))
 
 # The following code was directly translated from te-datainit.cpp in TE-Causality
-def determine_burst_rate(xindex, xtimes, tauMS, total_timeMS, size):
-  burst_treshold = 0.4
+def determine_burst_rate(xindex, xtimes, total_timeMS, size, tauMS=50, burst_treshold=0.4):
   assert(len(xindex)==len(xtimes))
   if len(xindex)<1:
     print "-> no spikes recorded!"

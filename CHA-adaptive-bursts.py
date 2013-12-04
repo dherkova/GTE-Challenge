@@ -73,7 +73,7 @@ while abs(burst_rate-TARGET_BURST_RATE)>TARGET_BURST_RATE_ACCURACY_GOAL:
   [size,cons,neuronsE,espikes,noise,GIDoffset] = nest_meta.go_create_network(yamlobj,weight,WEIGHT_NOISE,NOISE_RATE)
   nest.Simulate(ADAPTATION_SIMULATION_TIME)
   tauMS = 50
-  burst_rate = nest_meta.determine_burst_rate(nest.GetStatus(espikes, "events")[0]["senders"].flatten().tolist(), nest.GetStatus(espikes, "events")[0]["times"].flatten().tolist(), tauMS, ADAPTATION_SIMULATION_TIME, size)
+  burst_rate = nest_meta.determine_burst_rate(nest.GetStatus(espikes, "events")[0]["senders"].flatten().tolist(), nest.GetStatus(espikes, "events")[0]["times"].flatten().tolist(), ADAPTATION_SIMULATION_TIME, size, tauMS)
   print "-> the burst rate is "+str(burst_rate)+" Hz"
   assert adaptation_iteration < MAX_ADAPTATION_ITERATIONS
 

@@ -31,11 +31,12 @@ spikeindexfilename = str(cmd_arguments[3])
 
 # ------------------------------ Simulation parameters ------------------------------ #
 MAX_ADAPTATION_ITERATIONS = 100 # maximum number of iterations to find parameters for target bursting rate
-ADAPTATION_SIMULATION_TIME = 200*1000. # in ms
+ADAPTATION_SIMULATION_TIME = 2*200*1000. # in ms
+FRACTION_OF_ACTIVE_NEURONS_FOR_BURST_DETECTION = 0.9
 hours = 1.
 SIMULATION_TIME = hours*60.*60.*1000. # in ms
 TARGET_BURST_RATE = 0.1 # in Hz
-TARGET_BURST_RATE_ACCURACY_GOAL = 0.01 # in Hz
+TARGET_BURST_RATE_ACCURACY_GOAL = 0.005 # in Hz
 INITIAL_WEIGHT_JE = 8. # internal synaptic weight, initial value, in pA
 WEIGHT_NOISE = 2*0.28*20.0 #4. # external synaptic weight, in pA
 NOISE_RATE = 0.2 # rate of external inputs, in Hz
@@ -73,7 +74,7 @@ while abs(burst_rate-TARGET_BURST_RATE)>TARGET_BURST_RATE_ACCURACY_GOAL:
   [size,cons,neuronsE,espikes,noise,GIDoffset] = nest_meta.go_create_network(yamlobj,weight,WEIGHT_NOISE,NOISE_RATE)
   nest.Simulate(ADAPTATION_SIMULATION_TIME)
   tauMS = 50
-  burst_rate = nest_meta.determine_burst_rate(nest.GetStatus(espikes, "events")[0]["senders"].flatten().tolist(), nest.GetStatus(espikes, "events")[0]["times"].flatten().tolist(), ADAPTATION_SIMULATION_TIME, size, tauMS)
+  burst_rate = nest_meta.determine_burst_rate(nest.GetStatus(espikes, "events")[0]["senders"].flatten().tolist(), nest.GetStatus(espikes, "events")[0]["times"].flatten().tolist(), ADAPTATION_SIMULATION_TIME, size, tauMS, FRACTION_OF_ACTIVE_NEURONS_FOR_BURST_DETECTION)
   print "-> the burst rate is "+str(burst_rate)+" Hz"
   assert adaptation_iteration < MAX_ADAPTATION_ITERATIONS
 

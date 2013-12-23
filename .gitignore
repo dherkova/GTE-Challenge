@@ -3,6 +3,7 @@
 
 # This is for files which are used to prepare the final challenge
 *hidden.*
+test/
 
 documentation/*.log
 documentation/*.aux

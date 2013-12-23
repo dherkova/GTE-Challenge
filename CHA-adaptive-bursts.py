@@ -92,19 +92,12 @@ build_time = endbuild - startbuild
 sim_time = endsimulate - endbuild
 
 totalspikes = nest.GetStatus(espikes, "n_events")[0]
-print "Number of neurons : ", size
+print "Number of neurons: ", size
 print "Number of spikes recorded: ", totalspikes
 print "Avg. spike rate of neurons: %.2f Hz" % (totalspikes/(size*SIMULATION_TIME/1000.))
 print "Building time: %.2f s" % build_time
 print "Simulation time: %.2f s" % sim_time
 
 print "Saving spike times to disk..."
-inputFile = open(spiketimefilename,"w")
-# output spike times, in ms
-print >>inputFile, "\n".join([str(x) for x in nest.GetStatus(espikes, "events")[0]["times"] ])
-inputFile.close()
-
-inputFile = open(spikeindexfilename,"w")
-# remove offset, such that the output array starts with 0
-print >>inputFile, "\n".join([str(x-GIDoffset) for x in nest.GetStatus(espikes, "events")[0]["senders"] ])
-inputFile.close()
+nest_meta.save_spikes_to_disk(espikes, spikeindexfilename, spiketimefilename, GIDoffset)
+print "done."

@@ -177,3 +177,14 @@ def go_create_network(yamlobj, weight, JENoise, noise_rate, print_output=False, 
   
   print "-> "+str(added_connections)+" out of "+str(cons)+" connections (in YAML source) created."
   return [size, added_connections, neurons, espikes, noise, GIDoffset]
+
+def save_spikes_to_disk(NEST_spike_object, index_file_name, times_file_name, GID_offset=0):
+  inputFile = open(times_file_name,"w")
+  # output spike times, in ms
+  print >>inputFile, "\n".join([str(x) for x in nest.GetStatus(NEST_spike_object, "events")[0]["times"] ])
+  inputFile.close()
+  inputFile = open(index_file_name,"w")
+  # remove offset, such that the output array starts with 0
+  print >>inputFile, "\n".join([str(x-GID_offset) for x in nest.GetStatus(NEST_spike_object, "events")[0]["senders"] ])
+  inputFile.close()
+

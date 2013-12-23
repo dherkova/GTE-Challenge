@@ -139,20 +139,19 @@ def go_create_network(yamlobj, weight, JENoise, noise_rate, print_output=False, 
     if yamlobj.has_key('createdAt'):
       print "-> created: "+yamlobj.get('createdAt')
   
-  for i in range(len(yamlobj.get('nodes'))): # i starts counting at 0
-    thisnode = yamlobj.get('nodes')[i]
+  for thisnode in yamlobj.get('nodes'):
     if subnetwork_index_in_YAML < 0 or thisnode.get('subset') == subnetwork_index_in_YAML:
       yaml_id = int(thisnode.get('id'))
       # Source neuron needs to be in the subnet we are modelling
       if map_between_indices.has_key(yaml_id):
-        cfrom = neurons[map_between_indices[ int(thisnode.get('id')) ]]
+        cfrom = neurons[map_between_indices[yaml_id]]
         if thisnode.has_key('connectedTo'):
           cto_list = thisnode.get('connectedTo')
           for j in range(len(cto_list)):
             # Target neuron needs to be in the subnet we are modelling as well
             yaml_id = int(cto_list[j])
             if map_between_indices.has_key(yaml_id):
-              cto = neurons[map_between_indices[ int(cto_list[j]) ]]
+              cto = neurons[map_between_indices[yaml_id]]
               # Choose only a subset of connections
               if random.random() <= fraction_of_connections:
                 weight_here = 0.0

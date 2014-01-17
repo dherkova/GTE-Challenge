@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       145,          7]
-NotebookDataLength[    102391,       2170]
-NotebookOptionsPosition[    100554,       2105]
-NotebookOutlinePosition[    100941,       2122]
-CellTagsIndexPosition[    100898,       2119]
+NotebookDataLength[    105013,       2229]
+NotebookOptionsPosition[    103062,       2161]
+NotebookOutlinePosition[    103448,       2178]
+CellTagsIndexPosition[    103405,       2175]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -23,6 +23,50 @@ Cell[CellGroupData[{
 Cell["Init functions", "Section",
  CellChangeTimes->{{3.5684502811566553`*^9, 3.5684502872301683`*^9}, {
    3.568450750457419*^9, 3.568450751266872*^9}, 3.568453411023438*^9}],
+
+Cell[BoxData[
+ RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.5989495357953053`*^9, 3.598949535807169*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Second", "[", "l_List", "]"}], ":=", 
+   RowBox[{"l", "[", 
+    RowBox[{"[", "2", "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5989525753761272`*^9, 3.5989525753783197`*^9}, {
+  3.598953354717825*^9, 3.598953383733624*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"ListJoinDelimited", "[", 
+     RowBox[{"list_List", ",", 
+      RowBox[{"delimiter_String:", " ", "\"\<, \>\""}]}], "]"}], ":=", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"ii", ",", 
+        RowBox[{"out", "=", 
+         RowBox[{"{", "}"}]}]}], "}"}], ",", 
+      RowBox[{
+       RowBox[{"out", "=", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"ToString", "@", "delimiter"}], ",", 
+             RowBox[{"ToString", "@", "#"}]}], "}"}], "&"}], "/@", "list"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Return", "[", 
+        RowBox[{"StringJoin", "@", 
+         RowBox[{"Drop", "[", 
+          RowBox[{"out", ",", "1"}], "]"}]}], "]"}], ";"}]}], "]"}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.598948876660043*^9, 3.5989488770182743`*^9}, {
+  3.598950759458089*^9, 3.598950786095853*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -1574,7 +1618,8 @@ Cell[BoxData[
                RowBox[{"Assert", "[", 
                 RowBox[{
                  RowBox[{"Length", "@", 
-                  RowBox[{"Second", "@", "infoRule"}]}], "\[Equal]", 
+                  RowBox[{"infoRule", "[", 
+                   RowBox[{"[", "2", "]"}], "]"}]}], "\[Equal]", 
                  RowBox[{"Length", "@", "adjA"}]}], "]"}], ";", 
                "\[IndentingNewLine]", 
                RowBox[{"WriteString", "[", 
@@ -1584,10 +1629,11 @@ Cell[BoxData[
                    RowBox[{"First", "@", "infoRule"}], "]"}], "<>", 
                   "\"\<: \>\"", "<>", 
                   RowBox[{"ToString", "[", 
-                   RowBox[{
-                    RowBox[{"Second", "[", "infoRule", "]"}], 
-                    "\[LeftDoubleBracket]", "ii", "\[RightDoubleBracket]"}], 
-                   "]"}], "<>", "\"\<\\n\>\""}]}], "]"}], ";"}], 
+                   RowBox[{"Part", "[", 
+                    RowBox[{
+                    RowBox[{"infoRule", "[", 
+                    RowBox[{"[", "2", "]"}], "]"}], ",", "ii"}], "]"}], "]"}],
+                   "<>", "\"\<\\n\>\""}]}], "]"}], ";"}], 
               "\[IndentingNewLine]", ",", 
               RowBox[{"{", 
                RowBox[{"infoRule", ",", "infos"}], "}"}]}], "]"}], ";"}]}], 
@@ -1604,8 +1650,21 @@ Cell[BoxData[
    3.594558969304201*^9, 3.594558973162045*^9}, 3.594559060256974*^9, 
    3.5963645141172256`*^9, {3.596364551790036*^9, 3.596364585178985*^9}, {
    3.596364624836381*^9, 3.596364703106282*^9}, {3.596364757258484*^9, 
-   3.596364852503783*^9}}]
-}, Closed]],
+   3.596364852503783*^9}, {3.5989471573712397`*^9, 3.5989471584856863`*^9}, {
+   3.598953300742841*^9, 3.5989533091843224`*^9}, {3.598953347279994*^9, 
+   3.598953348709847*^9}, {3.5989535988863573`*^9, 3.598953603259583*^9}, {
+   3.598953804101234*^9, 3.598953807330085*^9}, {3.598954198729342*^9, 
+   3.598954217887176*^9}, {3.598954251956381*^9, 3.598954257165971*^9}, {
+   3.5989543193734093`*^9, 3.598954332142681*^9}, {3.598954620453682*^9, 
+   3.5989546247055683`*^9}, {3.598955711589199*^9, 3.598955714276279*^9}, {
+   3.598955835969986*^9, 3.5989558492326937`*^9}, {3.5989558852084007`*^9, 
+   3.598955893900999*^9}, {3.5989559345537453`*^9, 3.598955975269793*^9}, {
+   3.598956010454362*^9, 3.598956013062615*^9}, {3.598956153036021*^9, 
+   3.598956196125635*^9}, {3.59895640894481*^9, 3.598956424422731*^9}, {
+   3.5989566341946077`*^9, 3.598956639288425*^9}, {3.5989576398630657`*^9, 
+   3.598957648453208*^9}, {3.598957911141477*^9, 3.5989579151861143`*^9}, {
+   3.598961623231079*^9, 3.598961623703313*^9}}]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1615,9 +1674,7 @@ Cell["Create topology", "Section",
 
 Cell[CellGroupData[{
 
-Cell["\<\
-1.) Set basic network parameters\
-\>", "Subsection",
+Cell["1.) Set basic network parameters", "Subsection",
  CellChangeTimes->{{3.568450483288319*^9, 3.568450508442034*^9}, {
   3.568450942481145*^9, 3.5684509617163563`*^9}}],
 
@@ -1800,9 +1857,7 @@ Cell[BoxData[{
 
 Cell[CellGroupData[{
 
-Cell["\<\
-Create and export a number of clustered topologies\
-\>", "Section",
+Cell["Create and export a number of clustered topologies", "Section",
  CellChangeTimes->{{3.568532167168705*^9, 3.568532177995934*^9}, {
   3.5685323963114653`*^9, 3.568532397569633*^9}}],
 
@@ -1813,12 +1868,13 @@ Cell[BoxData[
   "\[IndentingNewLine]", 
   RowBox[{
    RowBox[{
-    RowBox[{"minimalDistance", "=", "0.01"}], ";", 
-    RowBox[{"(*", " ", 
-     RowBox[{
-      RowBox[{"min", ".", " ", "spatial"}], " ", "distance", " ", "between", 
-      " ", "two", " ", "nodes", " ", "on", " ", "the", " ", "unit", " ", 
-      "square"}], " ", "*)"}], "\[IndentingNewLine]", 
+    RowBox[{"minimalDistance", "=", "0.01"}], ";"}], 
+   RowBox[{"(*", " ", 
+    RowBox[{
+     RowBox[{"min", ".", " ", "spatial"}], " ", "distance", " ", "between", 
+     " ", "two", " ", "nodes", " ", "on", " ", "the", " ", "unit", " ", 
+     "square"}], " ", "*)"}], "\[IndentingNewLine]", 
+   RowBox[{
     RowBox[{"overallConnectionProbability", "=", "0.12"}], ";"}], 
    "\[IndentingNewLine]", 
    RowBox[{
@@ -2104,10 +2160,10 @@ Cell[BoxData[
 }, Open  ]]
 },
 AutoGeneratedPackage->None,
-WindowSize->{898, 752},
-WindowMargins->{{299, Automatic}, {Automatic, 109}},
-FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 23, \
-2011)",
+WindowSize->{914, 752},
+WindowMargins->{{181, Automatic}, {Automatic, 89}},
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 20, \
+2012)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -2122,55 +2178,58 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[567, 22, 175, 2, 67, "Section"],
-Cell[745, 26, 1376, 40, 103, "Input",
+Cell[567, 22, 175, 2, 80, "Section"],
+Cell[745, 26, 144, 2, 28, "Input"],
+Cell[892, 30, 280, 7, 28, "Input"],
+Cell[1175, 39, 1028, 29, 80, "Input"],
+Cell[2206, 70, 1376, 40, 114, "Input",
  InitializationCell->True],
-Cell[2124, 68, 17010, 300, 297, "Input",
+Cell[3585, 112, 17010, 300, 357, "Input",
  InitializationCell->True],
-Cell[19137, 370, 2852, 65, 178, "Input",
+Cell[20598, 414, 2852, 65, 199, "Input",
  InitializationCell->True],
-Cell[21992, 437, 10584, 219, 635, "Input",
+Cell[23453, 481, 10584, 219, 719, "Input",
  InitializationCell->True],
-Cell[32579, 658, 16018, 294, 815, "Input",
+Cell[34040, 702, 16018, 294, 896, "Input",
  InitializationCell->True],
-Cell[48600, 954, 979, 25, 43, "Input",
+Cell[50061, 998, 979, 25, 80, "Input",
  InitializationCell->True],
-Cell[49582, 981, 21357, 397, 1265, "Input",
+Cell[51043, 1025, 21357, 397, 1423, "Input",
  InitializationCell->True],
-Cell[70942, 1380, 9743, 226, 643, "Input",
+Cell[72403, 1424, 10797, 241, 726, "Input",
  InitializationCell->True]
-}, Closed]],
-Cell[CellGroupData[{
-Cell[80722, 1611, 128, 2, 37, "Section"],
-Cell[CellGroupData[{
-Cell[80875, 1617, 179, 4, 39, "Subsection"],
-Cell[81057, 1623, 1538, 37, 183, "Input"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[82632, 1665, 293, 6, 39, "Subsection"],
-Cell[82928, 1673, 1796, 44, 202, "Input"]
+Cell[83237, 1670, 128, 2, 80, "Section"],
+Cell[CellGroupData[{
+Cell[83390, 1676, 171, 2, 39, "Subsection"],
+Cell[83564, 1680, 1538, 37, 183, "Input"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[84761, 1722, 289, 5, 39, "Subsection"],
+Cell[85139, 1722, 293, 6, 39, "Subsection"],
+Cell[85435, 1730, 1796, 44, 202, "Input"]
+}, Open  ]],
 Cell[CellGroupData[{
-Cell[85075, 1731, 753, 20, 68, "Input"],
-Cell[85831, 1753, 506, 11, 20, "Print"]
+Cell[87268, 1779, 289, 5, 39, "Subsection"],
+Cell[CellGroupData[{
+Cell[87582, 1788, 753, 20, 68, "Input"],
+Cell[88338, 1810, 506, 11, 20, "Print"]
 }, Open  ]]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[86386, 1770, 166, 2, 31, "Subsection"],
-Cell[86555, 1774, 963, 22, 69, "Input"]
+Cell[88893, 1827, 166, 2, 31, "Subsection"],
+Cell[89062, 1831, 963, 22, 69, "Input"]
 }, Open  ]]
 }, Closed]],
 Cell[CellGroupData[{
-Cell[87567, 1802, 194, 4, 37, "Section"],
-Cell[87764, 1808, 2103, 52, 178, "Input"],
-Cell[89870, 1862, 4277, 90, 343, "Input"]
+Cell[90074, 1859, 186, 2, 50, "Section"],
+Cell[90263, 1863, 2112, 53, 199, "Input"],
+Cell[92378, 1918, 4277, 90, 386, "Input"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[94184, 1957, 263, 5, 67, "Section"],
-Cell[94450, 1964, 1985, 49, 178, "Input"],
-Cell[96438, 2015, 4100, 87, 328, "Input"]
+Cell[96692, 2013, 263, 5, 80, "Section"],
+Cell[96958, 2020, 1985, 49, 199, "Input"],
+Cell[98946, 2071, 4100, 87, 369, "Input"]
 }, Open  ]]
 }
 ]
